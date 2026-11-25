@@ -1,0 +1,39 @@
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: regain-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_dev_password
+      MYSQL_DATABASE: regain
+      MYSQL_USER: regain_user
+      MYSQL_PASSWORD: regain_dev_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - regain_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot_dev_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: regain-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "6380:6379"
+    volumes:
+      - regain_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  regain_mysql_data:
+  regain_redis_data:
