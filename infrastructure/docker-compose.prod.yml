@@ -1,0 +1,105 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: regain-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE:-regain}
+      MYSQL_USER: ${DB_USERNAME:-regain_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - regain_mysql_prod:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - regain_redis_prod:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ..
+      dockerfile: infrastructure/docker/backend.Dockerfile
+    restart: unless-stopped
+    env_file:
+      - ../backend/.env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - backend_storage:/var/www/backend/storage
+
+  queue:
+    build:
+      context: ..
+      dockerfile: infrastructure/docker/backend.Dockerfile
+    restart: unless-stopped
+    command: php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
+    env_file:
+      - ../backend/.env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - backend_storage:/var/www/backend/storage
+
+  scheduler:
+    build:
+      context: ..
+      dockerfile: infrastructure/docker/backend.Dockerfile
+    restart: unless-stopped
+    command: php artisan schedule:work
+    env_file:
+      - ../backend/.env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - backend_storage:/var/www/backend/storage
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: infrastructure/docker/frontend.Dockerfile
+      args:
+        NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE:-/api/v1}
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: regain-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
+      - ../backend/public:/var/www/backend/public:ro
+    depends_on:
+      - backend
+      - frontend
+
+volumes:
+  regain_mysql_prod:
+  regain_redis_prod:
+  backend_storage:

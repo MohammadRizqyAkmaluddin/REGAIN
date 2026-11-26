@@ -1,0 +1,105 @@
+<script setup lang="ts">
+import { todayJakarta } from '~/utils/format'
+
+const auth = useAuthStore()
+const errorMsg = ref<string | null>(null)
+
+const form = reactive({
+  name: '',
+  email: '',
+  password: '',
+  password_confirmation: '',
+  opening_balance: 0,
+  quit_date: todayJakarta(),
+})
+
+async function handleRegister() {
+  errorMsg.value = null
+  try {
+    await auth.register({
+      name: form.name,
+      email: form.email,
+      password: form.password,
+      password_confirmation: form.password_confirmation,
+      opening_balance: Number(form.opening_balance || 0),
+      quit_date: form.quit_date || undefined,
+    })
+    await navigateTo('/')
+  } catch (err: any) {
+    const errors = err?.data?.errors
+    if (errors) {
+      const first = Object.values(errors)[0]
+      errorMsg.value = Array.isArray(first) ? String(first[0]) : err?.data?.message
+    } else {
+      errorMsg.value = err?.data?.message || 'Pendaftaran gagal.'
+    }
+  }
+}
+</script>
+
+<template>
+  <div class="flex min-h-dvh items-center justify-center px-4 py-10">
+    <div class="w-full max-w-sm space-y-6">
+      <div class="text-center">
+        <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30">
+          <span class="text-base font-black tracking-tight">R:G</span>
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight">Mulai dengan RE:GAIN</h1>
+        <p class="mt-1.5 text-xs text-[var(--text-secondary)]">
+          Atur saldo awal dan tanggal berhenti merokokmu.
+        </p>
+      </div>
+
+      <form class="card-surface space-y-3.5 p-5" @submit.prevent="handleRegister">
+        <div>
+          <label class="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Nama Lengkap</label>
+          <input v-model="form.name" type="text" placeholder="Nama kamu" class="input-field" required>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Email</label>
+          <input v-model="form.email" type="email" placeholder="nama@email.com" class="input-field" required>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Kata Sandi</label>
+            <input v-model="form.password" type="password" minlength="8" placeholder="Min. 8 karakter" class="input-field" required>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Konfirmasi</label>
+            <input v-model="form.password_confirmation" type="password" minlength="8" placeholder="Ulangi sandi" class="input-field" required>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Saldo Awal (Rp)</label>
+            <input v-model.number="form.opening_balance" type="number" min="0" class="input-field tabular-nums">
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Tanggal Berhenti</label>
+            <input v-model="form.quit_date" type="date" class="input-field">
+          </div>
+        </div>
+
+        <p v-if="errorMsg" class="text-xs text-rose-400">{{ errorMsg }}</p>
+
+        <button
+          type="submit"
+          :disabled="auth.loading"
+          class="w-full rounded-xl bg-emerald-500 py-3 text-sm font-bold text-zinc-950 transition-colors hover:bg-emerald-400 disabled:opacity-50"
+        >
+          {{ auth.loading ? 'Mendaftarkan...' : 'Buat Akun' }}
+        </button>
+      </form>
+
+      <p class="text-center text-xs text-[var(--text-secondary)]">
+        Sudah punya akun?
+        <NuxtLink to="/login" class="font-semibold text-emerald-500 hover:underline">
+          Masuk
+        </NuxtLink>
+      </p>
+    </div>
+  </div>
+</template>
