@@ -1,0 +1,78 @@
+name: Deploy RE:GAIN to VPS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH to VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          command_timeout: 20m
+          script: |
+            set -euo pipefail
+            cd /var/www/app/REGAIN
+
+            PREV_SHA=$(git rev-parse HEAD)
+            git fetch origin main
+            git reset --hard origin/main
+            NEW_SHA=$(git rev-parse HEAD)
+
+            CHANGED=$(git diff --name-only "$PREV_SHA" "$NEW_SHA" || true)
+            echo "Changed files:"
+            echo "$CHANGED"
+
+            cd /var/www/app/REGAIN/infrastructure
+
+            BUILD_BACKEND=false
+            BUILD_FRONTEND=false
+
+            if [ -z "$CHANGED" ] || echo "$CHANGED" | grep -qE '^infrastructure/'; then
+              BUILD_BACKEND=true
+              BUILD_FRONTEND=true
+            else
+              if echo "$CHANGED" | grep -qE '^backend/'; then
+                BUILD_BACKEND=true
+              fi
+              if echo "$CHANGED" | grep -qE '^frontend/'; then
+                BUILD_FRONTEND=true
+              fi
+            fi
+
+            if [ "$BUILD_BACKEND" = true ] && [ "$BUILD_FRONTEND" = true ]; then
+              echo "Rebuilding backend + frontend..."
+              docker compose -f docker-compose.prod.yml up -d --build
+            elif [ "$BUILD_BACKEND" = true ]; then
+              echo "Rebuilding backend services only..."
+              docker compose -f docker-compose.prod.yml up -d --build backend queue scheduler
+            elif [ "$BUILD_FRONTEND" = true ]; then
+              echo "Rebuilding frontend only..."
+              docker compose -f docker-compose.prod.yml up -d --build frontend
+            else
+              echo "No backend/frontend/infrastructure changes detected; skipping Docker rebuild."
+            fi
+
+            if [ "$BUILD_BACKEND" = true ]; then
+              docker compose -f docker-compose.prod.yml exec -T backend php artisan migrate --force
+              docker compose -f docker-compose.prod.yml exec -T backend php artisan optimize
+            fi
+
+            docker builder prune -af
+
+            echo "Checking health endpoint..."
+            curl -fsS https://conexa.my.id/api/v1/health
+            echo ""
+            echo "Deploy completed successfully!"
