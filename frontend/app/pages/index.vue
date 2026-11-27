@@ -40,8 +40,8 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
 <template>
   <div class="space-y-5">
     <!-- Top Header -->
-    <div class="flex items-center justify-between gap-3">
-      <div class="flex items-center gap-2.5 min-w-0">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex min-w-0 items-center gap-2.5">
         <img
           src="/logos/dark-transparent-logo.png"
           alt="Deep Pockets"
@@ -54,18 +54,18 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
         >
         <div class="min-w-0">
           <p class="truncate text-xs text-[var(--text-secondary)]">Halo, {{ auth.user?.name || 'Teman Deep Pockets' }}</p>
-          <h1 class="text-xl font-bold tracking-tight">Ringkasan Keuangan</h1>
+          <h1 class="text-lg font-bold tracking-tight sm:text-xl">Ringkasan Keuangan</h1>
         </div>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex shrink-0 items-center gap-2">
         <input
           v-model="selectedMonth"
           type="month"
-          class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 py-1.5 text-xs font-medium text-[var(--text-primary)]"
+          class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--text-primary)]"
         >
         <button
           type="button"
-          class="rounded-xl bg-emerald-500 px-3.5 py-2 text-xs font-bold text-zinc-950 hover:bg-emerald-400"
+          class="whitespace-nowrap rounded-xl bg-emerald-500 px-3 py-2 text-xs font-bold text-zinc-950 hover:bg-emerald-400"
           @click="openQuickAdd('expense')"
         >
           + Catat
