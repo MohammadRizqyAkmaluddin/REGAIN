@@ -67,7 +67,7 @@ async function handleSubmit() {
           </button>
         </div>
 
-        <p class="mb-4 rounded-xl bg-emerald-500/10 p-3 text-xs leading-relaxed text-emerald-600 dark:text-emerald-300">
+        <p class="mb-4 rounded-xl bg-[var(--bg-elevated)] p-3 text-xs leading-relaxed text-[var(--text-secondary)]">
           Tidak apa-apa. Setiap langkah pemulihan tetap berharga — seluruh riwayat hari bebas rokokmu sebelumnya tetap tersimpan dan tidak dihapus.
         </p>
 
@@ -98,12 +98,12 @@ async function handleSubmit() {
             />
           </div>
 
-          <p v-if="errorMsg" class="text-xs text-rose-400">{{ errorMsg }}</p>
+          <p v-if="errorMsg" class="text-xs text-[var(--text-secondary)]">{{ errorMsg }}</p>
 
           <button
             type="submit"
             :disabled="submitting"
-            class="w-full rounded-xl bg-zinc-800 py-3 text-sm font-semibold text-white hover:bg-zinc-700 dark:bg-zinc-200 dark:text-zinc-950"
+            class="btn-primary w-full rounded-xl py-3 text-sm font-semibold disabled:opacity-50"
           >
             {{ submitting ? 'Menyimpan...' : 'Simpan & Lanjutkan Perjalanan' }}
           </button>

@@ -51,12 +51,12 @@ async function handleLogin() {
           <input v-model="form.password" type="password" autocomplete="current-password" placeholder="••••••••" class="input-field" required>
         </div>
 
-        <p v-if="errorMsg" class="text-xs text-rose-400">{{ errorMsg }}</p>
+        <p v-if="errorMsg" class="text-xs text-[var(--text-secondary)]">{{ errorMsg }}</p>
 
         <button
           type="submit"
           :disabled="auth.loading"
-          class="w-full rounded-xl bg-emerald-500 py-3 text-sm font-bold text-zinc-950 transition-colors hover:bg-emerald-400 disabled:opacity-50"
+          class="btn-primary w-full rounded-xl py-3 text-sm font-bold disabled:opacity-50"
         >
           {{ auth.loading ? 'Memproses...' : 'Masuk' }}
         </button>
@@ -64,7 +64,7 @@ async function handleLogin() {
 
       <p class="text-center text-xs text-[var(--text-secondary)]">
         Belum punya akun?
-        <NuxtLink to="/register" class="font-semibold text-emerald-500 hover:underline">
+        <NuxtLink to="/register" class="text-accent font-semibold hover:underline">
           Daftar Sekarang
         </NuxtLink>
       </p>

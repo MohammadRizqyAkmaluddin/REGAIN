@@ -38,9 +38,9 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
 </script>
 
 <template>
-  <div class="space-y-5">
+  <div class="space-y-4 md:space-y-5">
     <!-- Top Header -->
-    <div class="flex flex-wrap items-center justify-between gap-3">
+    <div class="flex flex-wrap items-center justify-between gap-3 px-4 md:px-0">
       <div class="flex min-w-0 items-center gap-2.5">
         <img
           src="/logos/dark-transparent-logo.png"
@@ -53,7 +53,7 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
           class="hidden h-9 w-9 shrink-0 object-contain dark:block md:hidden"
         >
         <div class="min-w-0">
-          <p class="truncate text-xs text-[var(--text-secondary)]">Halo, {{ auth.user?.name || 'Teman Deep Pockets' }}</p>
+          <p class="truncate text-xs text-[var(--text-secondary)]">{{ auth.user?.name || 'Deep Pockets' }}</p>
           <h1 class="text-lg font-bold tracking-tight sm:text-xl">Ringkasan Keuangan</h1>
         </div>
       </div>
@@ -65,7 +65,7 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
         >
         <button
           type="button"
-          class="whitespace-nowrap rounded-xl bg-emerald-500 px-3 py-2 text-xs font-bold text-zinc-950 hover:bg-emerald-400"
+          class="btn-primary whitespace-nowrap rounded-xl px-3 py-2 text-xs font-bold"
           @click="openQuickAdd('expense')"
         >
           + Catat
@@ -75,7 +75,7 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
 
     <div
       v-if="toastMsg"
-      class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5 text-xs font-medium text-emerald-500 dark:text-emerald-300"
+      class="mx-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2.5 text-xs font-medium text-[var(--text-primary)] md:mx-0"
     >
       {{ toastMsg }}
     </div>
@@ -83,12 +83,12 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
     <NotificationOnboardingBanner />
 
     <!-- Hero Cards: Actual Net Worth + Smoking Savings (Strictly Separated) -->
-    <div class="grid gap-4 md:grid-cols-2">
+    <div class="grid gap-3 md:grid-cols-2 md:gap-4">
       <!-- Actual Net Worth -->
       <section class="card-surface p-5">
         <div class="flex items-center justify-between">
           <span class="text-xs font-medium text-[var(--text-secondary)]">Kekayaan Bersih Aktual</span>
-          <span class="rounded-full bg-zinc-500/15 px-2.5 py-0.5 text-[11px] font-medium text-[var(--text-secondary)]">
+          <span class="rounded-full bg-[var(--bg-elevated)] px-2.5 py-0.5 text-[11px] font-medium text-[var(--text-secondary)]">
             Saldo Nyata
           </span>
         </div>
@@ -98,13 +98,13 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
         <div class="mt-4 grid grid-cols-2 gap-3 border-t border-[var(--border-subtle)] pt-3.5">
           <div>
             <div class="text-[11px] text-[var(--text-secondary)]">Pemasukan Bulan Ini</div>
-            <div class="mt-0.5 text-sm font-semibold text-emerald-500 tabular-nums">
+            <div class="mt-0.5 text-sm font-semibold text-[var(--text-primary)] tabular-nums">
               +{{ formatRupiah(finance.dashboard?.finance.monthly.monthly_income) }}
             </div>
           </div>
           <div>
             <div class="text-[11px] text-[var(--text-secondary)]">Pengeluaran Bulan Ini</div>
-            <div class="mt-0.5 text-sm font-semibold text-rose-500 tabular-nums">
+            <div class="mt-0.5 text-sm font-semibold text-[var(--text-secondary)] tabular-nums">
               -{{ formatRupiah(finance.dashboard?.finance.monthly.monthly_expenses) }}
             </div>
           </div>
@@ -112,22 +112,22 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
       </section>
 
       <!-- Smoking Savings (Strictly Separated) -->
-      <section class="card-surface relative overflow-hidden border-emerald-500/25 p-5">
+      <section class="card-surface relative overflow-hidden p-5">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-medium text-emerald-500 dark:text-emerald-400">Estimasi Tabungan Bebas Rokok</span>
-          <NuxtLink to="/smoke-free" class="text-[11px] font-semibold text-emerald-500 hover:underline">
+          <span class="text-xs font-medium text-[var(--text-secondary)]">Estimasi Tabungan Bebas Rokok</span>
+          <NuxtLink to="/smoke-free" class="text-accent text-[11px] font-semibold hover:underline">
             Detail →
           </NuxtLink>
         </div>
         <div class="mt-2 flex items-baseline justify-between gap-2">
-          <div class="text-3xl font-bold tracking-tight text-emerald-500 dark:text-emerald-400 tabular-nums">
+          <div class="text-3xl font-bold tracking-tight text-[var(--text-primary)] tabular-nums">
             {{ formatRupiah(finance.dashboard?.smoking.estimated_money_saved) }}
           </div>
-          <div class="rounded-xl bg-emerald-500/15 px-3 py-1 text-right">
-            <div class="text-lg font-extrabold leading-none text-emerald-500 tabular-nums">
+          <div class="rounded-xl bg-[var(--accent-soft)] px-3 py-1.5 text-right">
+            <div class="text-accent text-lg font-extrabold leading-none tabular-nums">
               {{ finance.dashboard?.smoking.current_streak_days ?? 0 }}
             </div>
-            <div class="text-[10px] font-medium text-emerald-600 dark:text-emerald-300">hari bebas</div>
+            <div class="mt-0.5 text-[10px] font-medium text-[var(--text-secondary)]">hari bebas</div>
           </div>
         </div>
         <p class="mt-3 border-t border-[var(--border-subtle)] pt-3 text-[11px] text-[var(--text-secondary)]">
@@ -138,7 +138,7 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
     </div>
 
     <!-- Financial Charts -->
-    <div class="grid gap-4 lg:grid-cols-5">
+    <div class="grid gap-3 md:gap-4 lg:grid-cols-5">
       <section class="card-surface p-5 lg:col-span-3">
         <div class="mb-3 flex items-center justify-between">
           <h2 class="text-sm font-semibold">Tren 6 Bulan Terakhir</h2>
@@ -178,7 +178,7 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
     <section class="card-surface p-5">
       <div class="mb-3 flex items-center justify-between">
         <h2 class="text-sm font-semibold">Transaksi Terbaru</h2>
-        <NuxtLink to="/transactions" class="text-xs font-semibold text-emerald-500 hover:underline">
+        <NuxtLink to="/transactions" class="text-accent text-xs font-semibold hover:underline">
           Lihat Semua →
         </NuxtLink>
       </div>
@@ -194,7 +194,7 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
               <span class="truncate text-sm font-medium">{{ tx.description || tx.category_name }}</span>
               <span
                 v-if="tx.source === 'recurring'"
-                class="rounded-md bg-sky-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-sky-400"
+                class="rounded-md bg-[var(--accent-soft)] px-1.5 py-0.5 text-[10px] font-semibold text-[var(--text-secondary)]"
               >
                 Rutin
               </span>
@@ -205,7 +205,7 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
           </div>
           <div
             class="shrink-0 text-sm font-bold tabular-nums"
-            :class="tx.type === 'income' ? 'text-emerald-500' : 'text-[var(--text-primary)]'"
+            :class="tx.type === 'income' ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'"
           >
             {{ tx.type === 'income' ? '+' : '-' }}{{ formatRupiah(tx.amount) }}
           </div>

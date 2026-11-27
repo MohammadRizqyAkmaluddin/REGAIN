@@ -2,11 +2,33 @@
 const { initTheme } = useTheme()
 const showSplash = ref(true)
 
+function preventGestureZoom(e: Event) {
+  e.preventDefault()
+}
+
+function preventPinchTouch(e: TouchEvent) {
+  if (e.touches.length > 1) {
+    e.preventDefault()
+  }
+}
+
 onMounted(() => {
   initTheme()
+  document.addEventListener('gesturestart', preventGestureZoom, { passive: false })
+  document.addEventListener('gesturechange', preventGestureZoom, { passive: false })
+  document.addEventListener('gestureend', preventGestureZoom, { passive: false })
+  document.addEventListener('touchmove', preventPinchTouch, { passive: false })
+
   window.setTimeout(() => {
     showSplash.value = false
   }, 750)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('gesturestart', preventGestureZoom)
+  document.removeEventListener('gesturechange', preventGestureZoom)
+  document.removeEventListener('gestureend', preventGestureZoom)
+  document.removeEventListener('touchmove', preventPinchTouch)
 })
 </script>
 

@@ -5,22 +5,51 @@
 @layer base {
   :root {
     color-scheme: light;
-    --bg-canvas: #f8fafc;
+    --bg-canvas: #f4f4f5;
     --bg-surface: #ffffff;
-    --bg-elevated: #f1f5f9;
-    --border-subtle: rgba(15, 23, 42, 0.08);
-    --text-primary: #09090b;
-    --text-secondary: #52525b;
+    --bg-elevated: #efefef;
+    --border-subtle: rgba(49, 49, 49, 0.09);
+    --text-primary: #18181b;
+    --text-secondary: #68686f;
+    --accent: #313131;
+    --accent-hover: #424242;
+    --accent-soft: rgba(49, 49, 49, 0.08);
+    --accent-text: #313131;
   }
 
   html.dark {
     color-scheme: dark;
     --bg-canvas: #09090b;
-    --bg-surface: #111114;
-    --bg-elevated: #18181b;
+    --bg-surface: #141417;
+    --bg-elevated: #1e1e22;
     --border-subtle: rgba(255, 255, 255, 0.08);
     --text-primary: #fafafa;
     --text-secondary: #a1a1aa;
+    --accent: #313131;
+    --accent-hover: #424247;
+    --accent-soft: rgba(255, 255, 255, 0.10);
+    --accent-text: #e4e4e7;
+  }
+
+  html,
+  body,
+  * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  html {
+    overscroll-behavior-x: none;
+    touch-action: pan-x pan-y;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
@@ -31,6 +60,8 @@
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-x: none;
+    touch-action: pan-x pan-y;
   }
 }
 
@@ -38,10 +69,50 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Full-width 100% edge-to-edge section on mobile; rounded card on desktop */
 .card-surface {
   background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 1.25rem;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+}
+
+@media (min-width: 768px) {
+  .card-surface {
+    border: 1px solid var(--border-subtle);
+    border-radius: 1.25rem;
+  }
+}
+
+/* Cohesive #313131 primary button */
+.btn-primary {
+  background-color: var(--accent);
+  color: #ffffff;
+  transition: background-color 160ms ease, transform 140ms ease, opacity 160ms ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+html.dark .btn-primary {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.btn-soft {
+  background-color: var(--accent-soft);
+  color: var(--accent-text);
+  transition: background-color 160ms ease, opacity 160ms ease;
+}
+
+.text-accent {
+  color: var(--accent-text);
 }
 
 .input-field {
@@ -50,25 +121,32 @@
   border: 1px solid var(--border-subtle);
   background-color: var(--bg-elevated);
   padding: 0.75rem 0.95rem;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--text-primary);
   outline: none;
   transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 
 .input-field:focus {
-  border-color: #10b981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16);
+  border-color: #313131;
+  box-shadow: 0 0 0 3px rgba(49, 49, 49, 0.16);
+}
+
+html.dark .input-field:focus {
+  border-color: #71717a;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
 }
 
 /* Mobile safe-area spacing for iPhone Dynamic Island / notch & top status blur */
 .safe-top-shell {
-  padding-top: calc(env(safe-area-inset-top, 0px) + 1.75rem);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 1.5rem);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 5.25rem);
 }
 
 @media (min-width: 768px) {
   .safe-top-shell {
     padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 }
 
@@ -80,42 +158,56 @@
   top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
 }
 
+/* Fixed consistent bottom anchor across all pages (short or tall) */
+.mobile-nav-anchor {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  pointer-events: none;
+}
+
 /* Floating Liquid Glass Bottom Navigation (iOS 26/27 & Instagram Pill style) */
 .liquid-glass-nav {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.68) 100%);
-  -webkit-backdrop-filter: blur(26px) saturate(200%);
-  backdrop-filter: blur(26px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.82);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.30) 100%);
+  -webkit-backdrop-filter: blur(22px) saturate(210%) brightness(1.06);
+  backdrop-filter: blur(22px) saturate(210%) brightness(1.06);
+  border: 1px solid rgba(255, 255, 255, 0.65);
   box-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.14),
-    0 2px 8px rgba(15, 23, 42, 0.06),
-    inset 0 1px 0.5px rgba(255, 255, 255, 0.95),
-    inset 0 -1px 0.5px rgba(15, 23, 42, 0.06);
-  transform-origin: center bottom;
-  transform: scale(1) translateY(0);
-  transition:
-    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    0 10px 32px rgba(15, 23, 42, 0.12),
+    0 2px 8px rgba(15, 23, 42, 0.05),
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.85),
+    inset 0 -1px 1px rgba(15, 23, 42, 0.06);
+  transform-origin: center center;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition: transform 440ms cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
 }
 
 html.dark .liquid-glass-nav {
-  background: linear-gradient(180deg, rgba(40, 40, 46, 0.76) 0%, rgba(22, 22, 26, 0.70) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(180deg, rgba(44, 44, 52, 0.44) 0%, rgba(24, 24, 30, 0.32) 100%);
+  -webkit-backdrop-filter: blur(22px) saturate(200%) brightness(1.08);
+  backdrop-filter: blur(22px) saturate(200%) brightness(1.08);
+  border: 1px solid rgba(255, 255, 255, 0.20);
   box-shadow:
-    0 14px 36px rgba(0, 0, 0, 0.52),
-    0 2px 8px rgba(0, 0, 0, 0.30),
-    inset 0 1px 0.5px rgba(255, 255, 255, 0.24),
-    inset 0 -1px 0.5px rgba(0, 0, 0, 0.35);
+    0 12px 36px rgba(0, 0, 0, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.25),
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.24),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.30);
 }
 
 .liquid-glass-nav.is-compact {
-  transform: scale(0.84) translateY(4px);
+  transform: translate3d(0, 0, 0) scale(0.88);
 }
 
 .liquid-glass-active-pill {
-  background: rgba(15, 23, 42, 0.09);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.60);
+  background: rgba(49, 49, 49, 0.10);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 
 html.dark .liquid-glass-active-pill {

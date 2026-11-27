@@ -48,7 +48,7 @@ const option = computed(() => {
       {
         type: 'bar',
         barMaxWidth: 26,
-        itemStyle: { color: '#10b981', borderRadius: [8, 8, 0, 0] },
+        itemStyle: { color: isDark ? '#e4e4e7' : '#313131', borderRadius: [8, 8, 0, 0] },
         data: props.items.map(i => Number.parseFloat(i.estimated_saved)),
       },
     ],

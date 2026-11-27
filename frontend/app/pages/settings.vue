@@ -85,15 +85,15 @@ async function handleLogout() {
 </script>
 
 <template>
-  <div class="space-y-5">
-    <div>
+  <div class="space-y-4 md:space-y-5">
+    <div class="px-4 md:px-0">
       <h1 class="text-xl font-bold tracking-tight">Pengaturan</h1>
       <p class="text-xs text-[var(--text-secondary)]">Akun keuangan dan notifikasi motivasi</p>
     </div>
 
     <div
       v-if="feedbackMsg"
-      class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5 text-xs text-emerald-500 dark:text-emerald-300"
+      class="mx-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2.5 text-xs text-[var(--text-primary)] md:mx-0"
     >
       {{ feedbackMsg }}
     </div>
@@ -130,7 +130,7 @@ async function handleLogout() {
           <option value="investment">Investasi</option>
         </select>
         <input v-model.number="newAccount.opening_balance" type="number" min="0" placeholder="Saldo awal" class="input-field tabular-nums">
-        <button type="submit" class="rounded-xl bg-emerald-500 px-3 py-2 text-xs font-bold text-zinc-950">
+        <button type="submit" class="btn-primary rounded-xl px-3 py-2 text-xs font-bold">
           + Tambah Akun
         </button>
       </form>
@@ -150,7 +150,7 @@ async function handleLogout() {
             v-if="!push.isSubscribed.value"
             type="button"
             :disabled="push.busy.value"
-            class="rounded-xl bg-emerald-500 px-3.5 py-2 text-xs font-bold text-zinc-950"
+            class="btn-primary rounded-xl px-3.5 py-2 text-xs font-bold"
             @click="push.subscribe()"
           >
             Aktifkan di Perangkat Ini
@@ -159,7 +159,7 @@ async function handleLogout() {
             v-else
             type="button"
             :disabled="push.busy.value"
-            class="rounded-xl border border-rose-500/40 px-3.5 py-2 text-xs font-semibold text-rose-400"
+            class="rounded-xl border border-[var(--border-subtle)] px-3.5 py-2 text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]"
             @click="push.unsubscribe()"
           >
             Matikan di Perangkat Ini
@@ -174,13 +174,13 @@ async function handleLogout() {
         </div>
       </div>
 
-      <p v-if="push.statusMessage.value" class="text-xs text-emerald-400">
+      <p v-if="push.statusMessage.value" class="text-xs text-[var(--text-secondary)]">
         {{ push.statusMessage.value }}
       </p>
 
       <form class="space-y-3 border-t border-[var(--border-subtle)] pt-4" @submit.prevent="saveNotificationSettings">
         <label class="flex items-center gap-2.5 text-xs font-medium">
-          <input v-model="notifForm.notifications_enabled" type="checkbox" class="h-4 w-4 accent-emerald-500">
+          <input v-model="notifForm.notifications_enabled" type="checkbox" class="h-4 w-4 accent-[#313131]">
           Aktifkan penjadwalan notifikasi motivasi acak
         </label>
 
@@ -206,7 +206,7 @@ async function handleLogout() {
         <button
           type="submit"
           :disabled="saving"
-          class="rounded-xl bg-emerald-500 px-4 py-2 text-xs font-bold text-zinc-950 hover:bg-emerald-400"
+          class="btn-primary rounded-xl px-4 py-2 text-xs font-bold"
         >
           {{ saving ? 'Menyimpan...' : 'Simpan Pengaturan Notifikasi' }}
         </button>
@@ -223,7 +223,7 @@ async function handleLogout() {
           >
             <div class="flex items-center justify-between gap-2">
               <span class="font-semibold">{{ log.title }}</span>
-              <span class="rounded-md bg-zinc-500/15 px-1.5 py-0.5 text-[10px] uppercase">{{ log.status }}</span>
+              <span class="rounded-md bg-[var(--accent-soft)] px-1.5 py-0.5 text-[10px] uppercase">{{ log.status }}</span>
             </div>
             <p class="mt-0.5 text-[var(--text-secondary)]">{{ log.body }}</p>
           </div>
@@ -239,7 +239,7 @@ async function handleLogout() {
       </div>
       <button
         type="button"
-        class="rounded-xl border border-rose-500/40 px-4 py-2 text-xs font-semibold text-rose-400 hover:bg-rose-500/10"
+        class="rounded-xl border border-[var(--border-subtle)] px-4 py-2 text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]"
         @click="handleLogout"
       >
         Keluar

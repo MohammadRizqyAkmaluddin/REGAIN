@@ -50,8 +50,8 @@ const activeChartItems = computed(() =>
 </script>
 
 <template>
-  <div class="space-y-5">
-    <div class="flex flex-wrap items-center justify-between gap-2">
+  <div class="space-y-4 md:space-y-5">
+    <div class="flex flex-wrap items-center justify-between gap-2 px-4 md:px-0">
       <div>
         <h1 class="text-xl font-bold tracking-tight">Perjalanan Bebas Rokok</h1>
         <p class="text-xs text-[var(--text-secondary)]">Setiap rokok yang tidak dibeli adalah uang untuk masa depanmu</p>
@@ -59,14 +59,14 @@ const activeChartItems = computed(() =>
       <div class="flex items-center gap-2">
         <button
           type="button"
-          class="rounded-xl border border-[var(--border-subtle)] px-3 py-2 text-xs font-medium hover:bg-[var(--bg-elevated)]"
+          class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 py-2 text-xs font-medium hover:bg-[var(--bg-elevated)]"
           @click="showConfig = !showConfig"
         >
           {{ showConfig ? 'Tutup Konfigurasi' : 'Atur Profil' }}
         </button>
         <button
           type="button"
-          class="rounded-xl bg-zinc-800 px-3 py-2 text-xs font-semibold text-white hover:bg-zinc-700 dark:bg-zinc-200 dark:text-zinc-950"
+          class="btn-primary rounded-xl px-3 py-2 text-xs font-semibold"
           @click="showRelapseModal = true"
         >
           Catat Relapse
@@ -76,16 +76,16 @@ const activeChartItems = computed(() =>
 
     <div
       v-if="feedbackMsg"
-      class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-xs leading-relaxed text-emerald-500 dark:text-emerald-300"
+      class="mx-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-3 text-xs leading-relaxed text-[var(--text-primary)] md:mx-0"
     >
       {{ feedbackMsg }}
     </div>
 
     <!-- Hero Streak & Estimated Savings -->
-    <section class="card-surface border-emerald-500/25 p-5">
+    <section class="card-surface p-5">
       <div class="grid gap-5 sm:grid-cols-2">
         <div>
-          <span class="text-xs font-medium text-emerald-500">Streak Bebas Rokok Saat Ini</span>
+          <span class="text-xs font-medium text-[var(--text-secondary)]">Streak Bebas Rokok Saat Ini</span>
           <div class="mt-1 flex items-baseline gap-2">
             <span class="text-4xl font-black tracking-tight tabular-nums">
               {{ smoking.summary?.progress.current_streak_days ?? 0 }}
@@ -99,7 +99,7 @@ const activeChartItems = computed(() =>
 
         <div class="sm:border-l sm:border-[var(--border-subtle)] sm:pl-5">
           <span class="text-xs font-medium text-[var(--text-secondary)]">Estimasi Uang Tersimpan</span>
-          <div class="mt-1 text-3xl font-black tracking-tight text-emerald-500 dark:text-emerald-400 tabular-nums">
+          <div class="mt-1 text-3xl font-black tracking-tight text-[var(--text-primary)] tabular-nums">
             {{ formatRupiah(smoking.summary?.progress.estimated_money_saved) }}
           </div>
           <p class="mt-2 text-[11px] text-[var(--text-secondary)]">
@@ -123,7 +123,7 @@ const activeChartItems = computed(() =>
         </div>
         <div>
           <div class="text-[11px] text-[var(--text-secondary)]">Potensi Hemat / Tahun</div>
-          <div class="mt-0.5 text-base font-bold text-emerald-500 tabular-nums">{{ formatRupiah(smoking.summary?.baseline.yearly_expenditure) }}</div>
+          <div class="mt-0.5 text-base font-bold text-[var(--text-primary)] tabular-nums">{{ formatRupiah(smoking.summary?.baseline.yearly_expenditure) }}</div>
         </div>
       </div>
     </section>
@@ -149,7 +149,7 @@ const activeChartItems = computed(() =>
           <input v-model.number="profileForm.cigarettes_per_pack" type="number" min="1" max="100" class="input-field tabular-nums" required>
         </div>
       </div>
-      <button type="submit" class="rounded-xl bg-emerald-500 px-4 py-2.5 text-xs font-bold text-zinc-950 hover:bg-emerald-400">
+      <button type="submit" class="btn-primary rounded-xl px-4 py-2.5 text-xs font-bold">
         Simpan Konfigurasi
       </button>
     </form>
@@ -161,16 +161,16 @@ const activeChartItems = computed(() =>
         <div class="flex rounded-lg bg-[var(--bg-elevated)] p-0.5 text-xs">
           <button
             type="button"
-            class="rounded-md px-3 py-1 font-medium"
-            :class="reportTab === 'weekly' ? 'bg-emerald-500 text-zinc-950' : 'text-[var(--text-secondary)]'"
+            class="rounded-md px-3 py-1 font-medium transition-colors"
+            :class="reportTab === 'weekly' ? 'btn-primary' : 'text-[var(--text-secondary)]'"
             @click="reportTab = 'weekly'"
           >
             Mingguan
           </button>
           <button
             type="button"
-            class="rounded-md px-3 py-1 font-medium"
-            :class="reportTab === 'monthly' ? 'bg-emerald-500 text-zinc-950' : 'text-[var(--text-secondary)]'"
+            class="rounded-md px-3 py-1 font-medium transition-colors"
+            :class="reportTab === 'monthly' ? 'btn-primary' : 'text-[var(--text-secondary)]'"
             @click="reportTab = 'monthly'"
           >
             Bulanan
@@ -194,11 +194,11 @@ const activeChartItems = computed(() =>
               {{ ev.event_type === 'quit_started' ? 'Mulai Berhenti Merokok' : ev.event_type === 'relapse' ? 'Catatan Kekambuhan' : 'Catatan Perjalanan' }}
             </div>
             <p v-if="ev.notes" class="mt-0.5 text-[var(--text-secondary)]">{{ ev.notes }}</p>
-            <p v-if="ev.trigger" class="mt-0.5 text-[11px] text-amber-500">Pemicu: {{ ev.trigger }}</p>
+            <p v-if="ev.trigger" class="mt-0.5 text-[11px] text-[var(--text-secondary)]">Pemicu: {{ ev.trigger }}</p>
           </div>
           <div class="shrink-0 text-right text-[var(--text-secondary)]">
             <div>{{ formatDateId(ev.event_date) }}</div>
-            <div v-if="ev.event_type === 'relapse'" class="font-medium text-amber-500">
+            <div v-if="ev.event_type === 'relapse'" class="font-medium text-[var(--text-primary)]">
               {{ ev.packs_smoked }} bks
             </div>
           </div>

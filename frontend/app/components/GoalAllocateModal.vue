@@ -69,7 +69,7 @@ async function handleSubmit() {
         <form class="space-y-4" @submit.prevent="handleSubmit">
           <div>
             <div class="mb-1 flex items-center justify-between text-xs">
-              <label class="font-medium text-emerald-500">Alokasi Virtual Tabungan Rokok (Rp)</label>
+              <label class="font-medium text-[var(--text-primary)]">Alokasi Virtual Tabungan Rokok (Rp)</label>
               <span class="text-[var(--text-secondary)]">Maks: {{ formatRupiah(maxSmokingForGoal) }}</span>
             </div>
             <input
@@ -91,12 +91,12 @@ async function handleSubmit() {
             >
           </div>
 
-          <p v-if="errorMsg" class="text-xs text-rose-400">{{ errorMsg }}</p>
+          <p v-if="errorMsg" class="text-xs text-[var(--text-secondary)]">{{ errorMsg }}</p>
 
           <button
             type="submit"
             :disabled="submitting"
-            class="w-full rounded-xl bg-emerald-500 py-3 text-sm font-bold text-zinc-950 hover:bg-emerald-400 disabled:opacity-50"
+            class="btn-primary w-full rounded-xl py-3 text-sm font-bold disabled:opacity-50"
           >
             {{ submitting ? 'Menyimpan...' : 'Simpan Alokasi' }}
           </button>

@@ -149,7 +149,7 @@ async function handleSubmit() {
             <button
               type="button"
               class="rounded-lg py-2 text-sm font-semibold transition-colors"
-              :class="form.type === 'expense' ? 'bg-rose-500 text-white' : 'text-[var(--text-secondary)]'"
+              :class="form.type === 'expense' ? 'btn-primary' : 'text-[var(--text-secondary)]'"
               @click="form.type = 'expense'"
             >
               Pengeluaran
@@ -157,7 +157,7 @@ async function handleSubmit() {
             <button
               type="button"
               class="rounded-lg py-2 text-sm font-semibold transition-colors"
-              :class="form.type === 'income' ? 'bg-emerald-500 text-zinc-950' : 'text-[var(--text-secondary)]'"
+              :class="form.type === 'income' ? 'btn-primary' : 'text-[var(--text-secondary)]'"
               @click="form.type = 'income'"
             >
               Pemasukan
@@ -234,14 +234,14 @@ async function handleSubmit() {
             >
           </div>
 
-          <p v-if="errorMsg" class="text-xs text-rose-400">
+          <p v-if="errorMsg" class="text-xs text-[var(--text-secondary)]">
             {{ errorMsg }}
           </p>
 
           <button
             type="submit"
             :disabled="submitting"
-            class="w-full rounded-xl bg-emerald-500 py-3 text-sm font-bold text-zinc-950 transition-colors hover:bg-emerald-400 disabled:opacity-50"
+            class="btn-primary w-full rounded-xl py-3 text-sm font-bold disabled:opacity-50"
           >
             {{ submitting ? 'Menyimpan...' : (editing ? 'Simpan Perubahan' : 'Simpan Transaksi') }}
           </button>

@@ -87,15 +87,15 @@ async function triggerDueRecurring() {
 </script>
 
 <template>
-  <div class="space-y-5">
-    <div class="flex items-center justify-between">
+  <div class="space-y-4 md:space-y-5">
+    <div class="flex items-center justify-between px-4 md:px-0">
       <div>
         <h1 class="text-xl font-bold tracking-tight">Transaksi</h1>
         <p class="text-xs text-[var(--text-secondary)]">Pemasukan aktual, pengeluaran, dan gaji rutin</p>
       </div>
       <button
         type="button"
-        class="rounded-xl bg-emerald-500 px-3.5 py-2 text-xs font-bold text-zinc-950 hover:bg-emerald-400"
+        class="btn-primary rounded-xl px-3.5 py-2 text-xs font-bold"
         @click="openCreate"
       >
         + Tambah
@@ -104,20 +104,20 @@ async function triggerDueRecurring() {
 
     <div
       v-if="statusBanner"
-      class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5 text-xs text-emerald-500 dark:text-emerald-300"
+      class="mx-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2.5 text-xs text-[var(--text-primary)] md:mx-0"
     >
       {{ statusBanner }}
     </div>
 
     <!-- Offline Pending Queue -->
-    <section v-if="finance.pendingOffline.length > 0" class="card-surface border-amber-500/30 p-4">
+    <section v-if="finance.pendingOffline.length > 0" class="card-surface p-4">
       <div class="mb-2.5 flex items-center justify-between">
-        <div class="text-xs font-bold text-amber-500">
+        <div class="text-xs font-bold text-[var(--text-primary)]">
           Antrean Offline — Belum Disinkronkan ({{ finance.pendingOffline.length }})
         </div>
         <button
           type="button"
-          class="rounded-lg bg-amber-500/20 px-2.5 py-1 text-xs font-semibold text-amber-500"
+          class="btn-primary rounded-lg px-2.5 py-1 text-xs font-semibold"
           :disabled="finance.syncingOffline"
           @click="finance.syncPendingOffline()"
         >
@@ -132,7 +132,7 @@ async function triggerDueRecurring() {
         >
           <div>
             <div class="font-medium">{{ item.description || item.category_name }}</div>
-            <div class="text-[11px] text-amber-500">
+            <div class="text-[11px] text-[var(--text-secondary)]">
               Status: {{ item.status === 'syncing' ? 'Menyinkronkan...' : item.status === 'failed' ? `Gagal (${item.error_message})` : 'Belum disinkronkan' }}
             </div>
           </div>
@@ -141,7 +141,7 @@ async function triggerDueRecurring() {
             <button
               v-if="item.id"
               type="button"
-              class="text-rose-400 hover:underline"
+              class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline"
               @click="finance.removePendingOffline(item.id)"
             >
               Hapus
@@ -168,7 +168,7 @@ async function triggerDueRecurring() {
           </button>
           <button
             type="button"
-            class="rounded-lg bg-emerald-500/15 px-2.5 py-1.5 text-xs font-semibold text-emerald-500"
+            class="btn-soft rounded-lg px-2.5 py-1.5 text-xs font-semibold"
             @click="showRecurringForm = !showRecurringForm"
           >
             {{ showRecurringForm ? 'Tutup' : '+ Gaji Rutin' }}
@@ -181,7 +181,7 @@ async function triggerDueRecurring() {
         <input v-model.number="recurringForm.amount" type="number" min="1" placeholder="Nominal (Rp)" class="input-field tabular-nums" required>
         <div class="flex gap-2">
           <input v-model.number="recurringForm.day_of_month" type="number" min="1" max="31" placeholder="Tgl (1-31)" class="input-field" required>
-          <button type="submit" class="shrink-0 rounded-xl bg-emerald-500 px-4 text-xs font-bold text-zinc-950">
+          <button type="submit" class="btn-primary shrink-0 rounded-xl px-4 text-xs font-bold">
             Simpan
           </button>
         </div>
@@ -200,8 +200,8 @@ async function triggerDueRecurring() {
             </div>
           </div>
           <div class="flex items-center gap-3">
-            <span class="font-bold text-emerald-500 tabular-nums">{{ formatRupiah(rec.amount) }}</span>
-            <button type="button" class="text-rose-400 hover:underline" @click="finance.deleteRecurringIncome(rec.id)">
+            <span class="font-bold text-[var(--text-primary)] tabular-nums">{{ formatRupiah(rec.amount) }}</span>
+            <button type="button" class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline" @click="finance.deleteRecurringIncome(rec.id)">
               Hapus
             </button>
           </div>
@@ -210,7 +210,7 @@ async function triggerDueRecurring() {
     </section>
 
     <!-- Filters -->
-    <div class="grid gap-2.5 sm:grid-cols-4">
+    <div class="grid gap-2.5 px-4 sm:grid-cols-4 md:px-0">
       <input
         v-model="filters.search"
         type="search"
@@ -239,7 +239,7 @@ async function triggerDueRecurring() {
               <span class="truncate text-sm font-medium">{{ tx.description || tx.category_name }}</span>
               <span
                 v-if="tx.source === 'recurring'"
-                class="rounded-md bg-sky-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-sky-400"
+                class="rounded-md bg-[var(--accent-soft)] px-1.5 py-0.5 text-[10px] font-semibold text-[var(--text-secondary)]"
               >
                 Rutin
               </span>
@@ -251,14 +251,14 @@ async function triggerDueRecurring() {
           <div class="flex shrink-0 items-center gap-3">
             <span
               class="text-sm font-bold tabular-nums"
-              :class="tx.type === 'income' ? 'text-emerald-500' : 'text-[var(--text-primary)]'"
+              :class="tx.type === 'income' ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'"
             >
               {{ tx.type === 'income' ? '+' : '-' }}{{ formatRupiah(tx.amount) }}
             </span>
-            <button type="button" class="text-xs text-[var(--text-secondary)] hover:text-emerald-400" @click="openEdit(tx)">
+            <button type="button" class="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)]" @click="openEdit(tx)">
               Edit
             </button>
-            <button type="button" class="text-xs text-rose-400 hover:underline" @click="handleDelete(tx)">
+            <button type="button" class="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline" @click="handleDelete(tx)">
               Hapus
             </button>
           </div>

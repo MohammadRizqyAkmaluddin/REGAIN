@@ -27,7 +27,7 @@ devServer: {
         },
       ],
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover' },
         { name: 'description', content: 'Setiap rokok yang tidak kamu beli adalah uang yang kamu simpan untuk masa depan.' },
         { name: 'theme-color', content: '#f8fafc', media: '(prefers-color-scheme: light)' },
         { name: 'theme-color', content: '#09090b', media: '(prefers-color-scheme: dark)' },

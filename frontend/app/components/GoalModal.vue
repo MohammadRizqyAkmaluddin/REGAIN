@@ -99,12 +99,12 @@ async function handleSubmit() {
             <input v-model="form.description" type="text" placeholder="Catatan singkat target" class="input-field">
           </div>
 
-          <p v-if="errorMsg" class="text-xs text-rose-400">{{ errorMsg }}</p>
+          <p v-if="errorMsg" class="text-xs text-[var(--text-secondary)]">{{ errorMsg }}</p>
 
           <button
             type="submit"
             :disabled="submitting"
-            class="w-full rounded-xl bg-emerald-500 py-3 text-sm font-bold text-zinc-950 hover:bg-emerald-400 disabled:opacity-50"
+            class="btn-primary w-full rounded-xl py-3 text-sm font-bold disabled:opacity-50"
           >
             {{ submitting ? 'Menyimpan...' : 'Simpan Target' }}
           </button>

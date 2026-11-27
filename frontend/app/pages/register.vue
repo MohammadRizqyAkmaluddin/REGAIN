@@ -92,12 +92,12 @@ async function handleRegister() {
           </div>
         </div>
 
-        <p v-if="errorMsg" class="text-xs text-rose-400">{{ errorMsg }}</p>
+        <p v-if="errorMsg" class="text-xs text-[var(--text-secondary)]">{{ errorMsg }}</p>
 
         <button
           type="submit"
           :disabled="auth.loading"
-          class="w-full rounded-xl bg-emerald-500 py-3 text-sm font-bold text-zinc-950 transition-colors hover:bg-emerald-400 disabled:opacity-50"
+          class="btn-primary w-full rounded-xl py-3 text-sm font-bold disabled:opacity-50"
         >
           {{ auth.loading ? 'Mendaftarkan...' : 'Buat Akun' }}
         </button>
@@ -105,7 +105,7 @@ async function handleRegister() {
 
       <p class="text-center text-xs text-[var(--text-secondary)]">
         Sudah punya akun?
-        <NuxtLink to="/login" class="font-semibold text-emerald-500 hover:underline">
+        <NuxtLink to="/login" class="text-accent font-semibold hover:underline">
           Masuk
         </NuxtLink>
       </p>

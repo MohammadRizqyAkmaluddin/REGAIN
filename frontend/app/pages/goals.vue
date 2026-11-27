@@ -28,15 +28,15 @@ async function removeGoal(goal: FinancialGoalItem) {
 </script>
 
 <template>
-  <div class="space-y-5">
-    <div class="flex items-center justify-between">
+  <div class="space-y-4 md:space-y-5">
+    <div class="flex items-center justify-between px-4 md:px-0">
       <div>
         <h1 class="text-xl font-bold tracking-tight">Target Keuangan</h1>
         <p class="text-xs text-[var(--text-secondary)]">Arahkan estimasi tabungan bebas rokok ke impianmu</p>
       </div>
       <button
         type="button"
-        class="rounded-xl bg-emerald-500 px-3.5 py-2 text-xs font-bold text-zinc-950 hover:bg-emerald-400"
+        class="btn-primary rounded-xl px-3.5 py-2 text-xs font-bold"
         @click="openCreate(null)"
       >
         + Target Baru
@@ -44,11 +44,11 @@ async function removeGoal(goal: FinancialGoalItem) {
     </div>
 
     <!-- Virtual Smoking Savings Pool Summary -->
-    <section class="card-surface border-emerald-500/25 p-4">
+    <section class="card-surface p-4">
       <div class="grid gap-3 sm:grid-cols-3">
         <div>
           <div class="text-[11px] text-[var(--text-secondary)]">Total Estimasi Tabungan Rokok</div>
-          <div class="mt-0.5 text-lg font-bold text-emerald-500 tabular-nums">
+          <div class="mt-0.5 text-lg font-bold text-[var(--text-primary)] tabular-nums">
             {{ formatRupiah(goalsStore.pool.estimated_money_saved) }}
           </div>
         </div>
@@ -60,7 +60,7 @@ async function removeGoal(goal: FinancialGoalItem) {
         </div>
         <div>
           <div class="text-[11px] text-[var(--text-secondary)]">Tersedia untuk Dialokasikan</div>
-          <div class="mt-0.5 text-lg font-bold text-sky-400 tabular-nums">
+          <div class="mt-0.5 text-lg font-bold text-[var(--text-secondary)] tabular-nums">
             {{ formatRupiah(goalsStore.pool.unallocated_savings) }}
           </div>
         </div>
@@ -68,12 +68,12 @@ async function removeGoal(goal: FinancialGoalItem) {
     </section>
 
     <!-- Quick Presets -->
-    <div class="flex flex-wrap gap-2">
+    <div class="flex flex-wrap gap-2 px-4 md:px-0">
       <button
         v-for="p in presets"
         :key="p.name"
         type="button"
-        class="rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 py-1.5 text-xs font-medium hover:border-emerald-500/40 hover:text-emerald-400"
+        class="rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 py-1.5 text-xs font-medium text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]"
         @click="openCreate(p)"
       >
         + {{ p.name }}
@@ -81,7 +81,7 @@ async function removeGoal(goal: FinancialGoalItem) {
     </div>
 
     <!-- Goals Grid -->
-    <div v-if="goalsStore.goals.length > 0" class="grid gap-4 sm:grid-cols-2">
+    <div v-if="goalsStore.goals.length > 0" class="grid gap-3 sm:grid-cols-2 md:gap-4">
       <article
         v-for="goal in goalsStore.goals"
         :key="goal.id"
@@ -97,7 +97,7 @@ async function removeGoal(goal: FinancialGoalItem) {
             </div>
             <span
               class="rounded-full px-2.5 py-0.5 text-[10px] font-semibold"
-              :class="goal.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-zinc-500/15 text-[var(--text-secondary)]'"
+              :class="goal.status === 'completed' ? 'bg-[#313131] text-white dark:bg-white/15 dark:text-white' : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)]'"
             >
               {{ goal.status === 'completed' ? 'Tercapai' : 'Aktif' }}
             </span>
@@ -110,13 +110,13 @@ async function removeGoal(goal: FinancialGoalItem) {
 
           <div class="mt-2 h-2.5 overflow-hidden rounded-full bg-[var(--bg-elevated)]">
             <div
-              class="h-full rounded-full bg-emerald-500 transition-all duration-300"
+              class="h-full rounded-full bg-[#313131] transition-all duration-300 dark:bg-zinc-200"
               :style="{ width: `${Math.min(100, goal.progress_percentage)}%` }"
             />
           </div>
 
           <div class="mt-2.5 flex items-center justify-between text-[11px] text-[var(--text-secondary)]">
-            <span>Tabungan Rokok: <strong class="text-emerald-500">{{ formatRupiah(goal.allocated_smoking_savings) }}</strong></span>
+            <span>Tabungan Rokok: <strong class="text-[var(--text-primary)]">{{ formatRupiah(goal.allocated_smoking_savings) }}</strong></span>
             <span class="font-semibold">{{ goal.progress_percentage }}%</span>
           </div>
         </div>
@@ -124,14 +124,14 @@ async function removeGoal(goal: FinancialGoalItem) {
         <div class="mt-4 flex items-center justify-between border-t border-[var(--border-subtle)] pt-3 text-xs">
           <button
             type="button"
-            class="font-semibold text-emerald-500 hover:underline"
+            class="text-accent font-semibold hover:underline"
             @click="allocatingGoal = goal"
           >
             Atur Alokasi
           </button>
           <button
             type="button"
-            class="text-rose-400 hover:underline"
+            class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline"
             @click="removeGoal(goal)"
           >
             Hapus
