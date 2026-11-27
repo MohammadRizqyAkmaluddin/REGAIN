@@ -38,7 +38,7 @@ class PushNotificationService
             [
                 'key' => 'mindful_check_in',
                 'title' => 'Tetap Fokus pada Targetmu',
-                'body' => 'Sudah :cigs batang rokok tidak terbakar. Cek progres target keuanganmu di RE:GAIN.',
+                'body' => 'Sudah :cigs batang rokok tidak terbakar. Cek progres target keuanganmu di Deep Pockets.',
             ],
             [
                 'key' => 'gentle_encouragement',

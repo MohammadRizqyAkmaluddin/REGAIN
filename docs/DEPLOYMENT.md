@@ -1,10 +1,10 @@
-# RE:GAIN — Panduan Deploy VPS (conexa.my.id) & PWA iPhone
+# Deep Pockets — Panduan Deploy VPS (deepocket.my.id) & PWA iPhone
 
-Domain: `conexa.my.id` → IP VPS (IDCloudHost, Ubuntu). Semua perintah `$` dijalankan di VPS via SSH.
+Domain: `deepocket.my.id` → IP VPS (IDCloudHost, Ubuntu). Semua perintah `$` dijalankan di VPS via SSH.
 
 ## 0. Cek DNS (dari laptop)
 ```
-nslookup conexa.my.id
+nslookup deepocket.my.id
 ```
 Hasilnya harus IP VPS kamu (A record). Kalau belum, tunggu propagasi.
 
@@ -27,9 +27,9 @@ git clone <URL_REPO> ~/REGAIN && cd ~/REGAIN
 
 ## 3. Sertifikat HTTPS (Certbot, sekali saja, SEBELUM menyalakan nginx)
 ```bash
-sudo certbot certonly --standalone -d conexa.my.id
+sudo certbot certonly --standalone -d deepocket.my.id
 ```
-Cek file ada di `/etc/letsencrypt/live/conexa.my.id/`. Auto-renew (nginx dihentikan sebentar saat renew):
+Cek file ada di `/etc/letsencrypt/live/deepocket.my.id/`. Auto-renew (nginx dihentikan sebentar saat renew):
 ```bash
 sudo crontab -e
 # tambahkan:
@@ -65,7 +65,7 @@ docker compose -f docker-compose.prod.yml exec backend php artisan migrate --for
 docker compose -f docker-compose.prod.yml exec backend php artisan optimize
 docker compose -f docker-compose.prod.yml ps     # semua harus Up
 ```
-Tes: buka `https://conexa.my.id/api/v1/health` (harus JSON `status: ok`) dan `https://conexa.my.id`.
+Tes: buka `https://deepocket.my.id/api/v1/health` (harus JSON `status: ok`) dan `https://deepocket.my.id`.
 
 > Frontend memakai API base `/api/v1` (same-origin) sehingga tidak perlu CORS tambahan.
 
@@ -78,7 +78,7 @@ crontab -e
 (Container MySQL bernama `regain-mysql`, sesuai default script.)
 
 ## 9. Pasang di iPhone (iOS 16.4+)
-1. Buka **Safari** → `https://conexa.my.id` → daftar/login.
+1. Buka **Safari** → `https://deepocket.my.id` → daftar/login.
 2. Tap **Bagikan** → **Tambah ke Layar Utama** → Tambah.
 3. Buka aplikasi **dari ikon di layar utama** (bukan dari Safari).
 4. Settings app → **Aktifkan di Perangkat Ini** → izinkan notifikasi → **Uji Kirim**.

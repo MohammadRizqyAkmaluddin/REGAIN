@@ -1,0 +1,43 @@
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #f8fafc;
+  }
+  .dp-spa-splash {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8fafc;
+    padding: 2rem;
+  }
+  .dp-spa-splash img {
+    width: min(220px, 62vw);
+    height: auto;
+    object-fit: contain;
+  }
+  .dp-spa-logo-dark {
+    display: none;
+  }
+  .dp-spa-logo-light {
+    display: block;
+  }
+  @media (prefers-color-scheme: dark) {
+    html, body, .dp-spa-splash {
+      background-color: #09090b;
+    }
+    .dp-spa-logo-light {
+      display: none;
+    }
+    .dp-spa-logo-dark {
+      display: block;
+    }
+  }
+</style>
+<div class="dp-spa-splash" role="status" aria-label="Memuat Deep Pockets">
+  <img src="/logos/dark-full-transparent-logo.png" alt="Deep Pockets" class="dp-spa-logo-light" />
+  <img src="/logos/light-full-transparent-logo.png" alt="Deep Pockets" class="dp-spa-logo-dark" />
+</div>

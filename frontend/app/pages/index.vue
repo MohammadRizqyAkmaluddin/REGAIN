@@ -41,9 +41,21 @@ async function onTransactionSaved(info: { queuedOffline: boolean }) {
   <div class="space-y-5">
     <!-- Top Header -->
     <div class="flex items-center justify-between gap-3">
-      <div>
-        <p class="text-xs text-[var(--text-secondary)]">Halo, {{ auth.user?.name || 'Teman RE:GAIN' }}</p>
-        <h1 class="text-xl font-bold tracking-tight">Ringkasan Keuangan</h1>
+      <div class="flex items-center gap-2.5 min-w-0">
+        <img
+          src="/logos/dark-transparent-logo.png"
+          alt="Deep Pockets"
+          class="h-9 w-9 shrink-0 object-contain dark:hidden md:hidden"
+        >
+        <img
+          src="/logos/light-transparent-logo.png"
+          alt="Deep Pockets"
+          class="hidden h-9 w-9 shrink-0 object-contain dark:block md:hidden"
+        >
+        <div class="min-w-0">
+          <p class="truncate text-xs text-[var(--text-secondary)]">Halo, {{ auth.user?.name || 'Teman Deep Pockets' }}</p>
+          <h1 class="text-xl font-bold tracking-tight">Ringkasan Keuangan</h1>
+        </div>
       </div>
       <div class="flex items-center gap-2">
         <input

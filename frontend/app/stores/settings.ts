@@ -25,10 +25,6 @@ export const useSettingsStore = defineStore('settings', () => {
       body: payload,
     })
     settings.value = res.data
-    if (res.data.theme === 'dark' || res.data.theme === 'light') {
-      const { applyTheme } = useTheme()
-      applyTheme(res.data.theme)
-    }
     return res.data
   }
 

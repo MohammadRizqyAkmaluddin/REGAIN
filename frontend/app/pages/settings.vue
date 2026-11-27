@@ -5,7 +5,6 @@ const auth = useAuthStore()
 const settingsStore = useSettingsStore()
 const finance = useFinanceStore()
 const push = usePushNotifications()
-const { theme, applyTheme } = useTheme()
 
 const saving = ref(false)
 const feedbackMsg = ref<string | null>(null)
@@ -40,11 +39,6 @@ onMounted(async () => {
     notifForm.notification_cooldown_minutes = settingsStore.settings.notification_cooldown_minutes
   }
 })
-
-async function switchTheme(next: 'dark' | 'light') {
-  applyTheme(next)
-  await settingsStore.updateSettings({ theme: next })
-}
 
 async function saveNotificationSettings() {
   saving.value = true
@@ -94,7 +88,7 @@ async function handleLogout() {
   <div class="space-y-5">
     <div>
       <h1 class="text-xl font-bold tracking-tight">Pengaturan</h1>
-      <p class="text-xs text-[var(--text-secondary)]">Tampilan, akun keuangan, dan notifikasi motivasi</p>
+      <p class="text-xs text-[var(--text-secondary)]">Akun keuangan dan notifikasi motivasi</p>
     </div>
 
     <div
@@ -103,30 +97,6 @@ async function handleLogout() {
     >
       {{ feedbackMsg }}
     </div>
-
-    <!-- Appearance -->
-    <section class="card-surface p-5">
-      <h2 class="text-sm font-semibold">Tema Aplikasi</h2>
-      <p class="mt-0.5 text-xs text-[var(--text-secondary)]">Mode gelap aktif secara default untuk kenyamanan mata.</p>
-      <div class="mt-3 grid grid-cols-2 gap-2.5 sm:max-w-xs">
-        <button
-          type="button"
-          class="rounded-xl border py-2.5 text-xs font-semibold transition-colors"
-          :class="theme === 'dark' ? 'border-emerald-500 bg-emerald-500/15 text-emerald-400' : 'border-[var(--border-subtle)]'"
-          @click="switchTheme('dark')"
-        >
-          Mode Gelap
-        </button>
-        <button
-          type="button"
-          class="rounded-xl border py-2.5 text-xs font-semibold transition-colors"
-          :class="theme === 'light' ? 'border-emerald-500 bg-emerald-500/15 text-emerald-600' : 'border-[var(--border-subtle)]'"
-          @click="switchTheme('light')"
-        >
-          Mode Terang
-        </button>
-      </div>
-    </section>
 
     <!-- Accounts -->
     <section class="card-surface space-y-4 p-5">

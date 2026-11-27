@@ -19,13 +19,22 @@ async function handleLogin() {
 </script>
 
 <template>
-  <div class="flex min-h-dvh items-center justify-center px-4 py-10">
+  <div class="safe-top-auth flex min-h-dvh items-center justify-center px-4 pb-10">
     <div class="w-full max-w-sm space-y-6">
       <div class="text-center">
-        <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30">
-          <span class="text-base font-black tracking-tight">R:G</span>
+        <div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center">
+          <img
+            src="/logos/dark-transparent-logo.png"
+            alt="Deep Pockets"
+            class="h-12 w-12 object-contain dark:hidden"
+          >
+          <img
+            src="/logos/light-transparent-logo.png"
+            alt="Deep Pockets"
+            class="hidden h-12 w-12 object-contain dark:block"
+          >
         </div>
-        <h1 class="text-2xl font-bold tracking-tight">Masuk ke RE:GAIN</h1>
+        <h1 class="text-2xl font-bold tracking-tight">Masuk ke Deep Pockets</h1>
         <p class="mt-1.5 text-xs text-[var(--text-secondary)]">
           Setiap rokok yang tidak kamu beli adalah uang yang kamu simpan untuk masa depan.
         </p>

@@ -22,7 +22,7 @@ registerRoute(
       return await fetch(request)
     } catch {
       const cached = await caches.match('/index.html') || await caches.match('/')
-      return cached || new Response('Offline — RE:GAIN', { status: 503, headers: { 'Content-Type': 'text/plain' } })
+      return cached || new Response('Offline — Deep Pockets', { status: 503, headers: { 'Content-Type': 'text/plain' } })
     }
   }, {
     denylist: [/^\/api\//],
@@ -43,10 +43,10 @@ self.addEventListener('push', (event: PushEvent) => {
   try {
     data = event.data.json()
   } catch {
-    data = { title: 'RE:GAIN', body: event.data.text() }
+    data = { title: 'Deep Pockets', body: event.data.text() }
   }
 
-  const title = data.title || 'RE:GAIN'
+  const title = data.title || 'Deep Pockets'
   const options: NotificationOptions = {
     body: data.body || 'Setiap rokok yang tidak kamu beli adalah uang untuk masa depanmu.',
     icon: data.icon || '/icons/icon-192.png',

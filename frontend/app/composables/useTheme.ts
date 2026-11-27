@@ -1,31 +1,40 @@
-export function useTheme() {
-  const theme = useState<'dark' | 'light'>('regain-theme', () => 'dark')
+let mediaQueryListenerBound = false
 
-  function applyTheme(next: 'dark' | 'light') {
+export function useTheme() {
+  const theme = useState<'dark' | 'light'>('deep-pockets-theme', () => 'dark')
+
+  function syncWithSystem(isDark: boolean) {
+    const next = isDark ? 'dark' : 'light'
     theme.value = next
     if (!import.meta.client) return
-    const root = document.documentElement
-    if (next === 'dark') {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
-    }
-    localStorage.setItem('regain_theme', next)
+    document.documentElement.classList.toggle('dark', isDark)
   }
 
   function initTheme() {
     if (!import.meta.client) return
-    const saved = localStorage.getItem('regain_theme')
-    if (saved === 'light' || saved === 'dark') {
-      applyTheme(saved)
-    } else {
-      applyTheme('dark')
+
+    // Remove legacy manual theme preference so OS setting is always respected
+    try {
+      localStorage.removeItem('regain_theme')
+    } catch {
+      // ignore storage errors
+    }
+
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    syncWithSystem(mq.matches)
+
+    if (!mediaQueryListenerBound) {
+      mediaQueryListenerBound = true
+      const onChange = (event: MediaQueryListEvent) => {
+        syncWithSystem(event.matches)
+      }
+      if (typeof mq.addEventListener === 'function') {
+        mq.addEventListener('change', onChange)
+      } else {
+        mq.addListener(onChange)
+      }
     }
   }
 
-  function toggleTheme() {
-    applyTheme(theme.value === 'dark' ? 'light' : 'dark')
-  }
-
-  return { theme, applyTheme, initTheme, toggleTheme }
+  return { theme, initTheme }
 }

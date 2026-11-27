@@ -35,10 +35,6 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const res = await api.request<{ user: User; settings?: AppSettingsItem }>('/auth/me')
       user.value = res.user
-      if (res.settings?.theme && (res.settings.theme === 'dark' || res.settings.theme === 'light')) {
-        const { applyTheme } = useTheme()
-        applyTheme(res.settings.theme)
-      }
     } catch {
       clearSession()
     } finally {

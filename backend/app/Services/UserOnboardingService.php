@@ -68,7 +68,7 @@ class UserOnboardingService
                     'event_time' => Carbon::now('Asia/Jakarta')->format('H:i:s'),
                     'packs_smoked' => '0.00',
                     'estimated_cost' => '0.00',
-                    'notes' => 'Memulai perjalanan bebas rokok bersama RE:GAIN.',
+                    'notes' => 'Memulai perjalanan bebas rokok bersama Deep Pockets.',
                 ]);
             }
         });
